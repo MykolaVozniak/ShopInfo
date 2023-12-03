@@ -1,4 +1,4 @@
-﻿namespace Tumbleweed.Models
+﻿namespace ShopInfo.Models
 {
     public class Product
     {

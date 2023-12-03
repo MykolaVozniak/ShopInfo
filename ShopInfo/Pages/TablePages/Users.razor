@@ -1,6 +1,104 @@
 ﻿@page "/users"
-<h3>Users</h3>
+@using ShopInfo.Controllers
+@using ShopInfo.Models
+@inject IJSRuntime js
+@inject NavigationManager navManager
+<PageTitle>Users</PageTitle>
+
+<h1 class="text-center">Users</h1>
+<hr />
+
+<div class="row my-3">
+    <div class="col ">
+        <input type="radio" class="btn-check" name="options-outlined" id="asc-outlined" autocomplete="off" checked @onchange="OnAscChange">
+        <label class="btn btn-outline-primary" for="asc-outlined"><span class="oi oi-caret-top" aria-hidden="true"></span> Ascending</label>
+    </div>
+
+    <div class="col ">
+        <input type="radio" class="btn-check" name="options-outlined" id="desc-outlined" autocomplete="off" @onchange="OnDescChange">
+        <label class="btn btn-outline-primary" for="desc-outlined"><span class="oi oi-caret-bottom" aria-hidden="true"></span> Descending</label>
+    </div>
+
+    <div class="col ">
+        <input type="number" class="h-100 rounded border-1 p-1 ps-2" placeholder="Enter row count" aria-label="Count" @onchange="OnCountChange">
+    </div>
+</div>
+
+<table class="table border-3">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th>Id</th>
+            <th>FirstName</th>
+            <th>MiddleName</th>
+            <th>LastName</th>
+            <th>Birthdate</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Password</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in users)
+        {
+            <tr class="bg-light">
+                <td>@user.Id</td>
+                <td>@user.FirstName</td>
+                <td>@user.MiddleName</td>
+                <td>@user.LastName</td>
+                <td>@user.Birthdate.ToShortDateString()</td>
+                <td>@user.Phone</td>
+                <td>@user.Email</td>
+                <td>@user.Password</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 @code {
 
+    private bool isAsc = true;
+    private int n = 5;
+    private List<User> users;
+
+    private void OnAscChange(ChangeEventArgs args)
+    {
+        if (args.Value.ToString() == "on")
+        {
+            isAsc = true;
+            js.InvokeVoidAsync("console.log", "true");
+            RefreshUsers();
+        }
+    }
+    private void OnDescChange(ChangeEventArgs args)
+    {
+        if (args.Value.ToString() == "on")
+        {
+            isAsc = false;
+            js.InvokeVoidAsync("console.log", "false");
+            RefreshUsers();
+        }
+    }
+
+    private void OnCountChange(ChangeEventArgs args)
+    {
+        var val = Convert.ToInt32(args.Value);
+        if (val >= 0)
+        {
+            n = val;
+            RefreshUsers();
+        }
+    }
+
+    private void RefreshUsers()
+    {
+        var usersController = new UsersController();
+        users = usersController.GetUsers(n: n, isAsc: isAsc).ToList();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        RefreshUsers();
+    }
 }

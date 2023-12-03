@@ -93,5 +93,6 @@
     <Build Include="dbo\Stored Procedures\sp_User_Delete.sql" />
     <Build Include="dbo\Stored Procedures\sp_User_Edit.sql" />
     <Build Include="dbo\Stored Procedures\GetUserInformation.sql" />
+    <Build Include="dbo\Stored Procedures 2\sp_Get_First_N_Records.sql" />
   </ItemGroup>
 </Project>
