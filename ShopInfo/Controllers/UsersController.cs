@@ -14,12 +14,58 @@ namespace ShopInfo.Controllers
             using (var connection = DataBaseConstants.GetConnection())
             {
                 connection.Open();
-                var parameters = new { TableName = "Users", nCount = n, isASC = isAsc };
+                var parameters = new 
+                {
+                    TableName = "Users", 
+                    nCount = n, 
+                    isASC = isAsc 
+                };
                 var rows = connection.Query<User>(
-                    DataBaseConstants.GetFirstNRecords,
+                    DataBaseConstants.GetRecords,
                      parameters,
                     commandType: CommandType.StoredProcedure);
                 return rows;
+            }
+        }
+
+        public bool UserRegister(User user)
+        {
+            using (var connection = DataBaseConstants.GetConnection())
+            {
+                connection.Open();
+                var parameters = new
+                {
+                    user.LastName,
+                    user.FirstName,
+                    user.Email,
+                    user.Password,
+                    user.Phone,
+                    user.Birthdate,
+                    user.MiddleName
+                };
+                    var rows = connection.Execute(
+                    DataBaseConstants.UserAdd,
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
+                return rows > 0;
+            }
+        }
+
+        public bool DeleteUser(int userId)
+        {
+            using (var connection = DataBaseConstants.GetConnection())
+            {
+                connection.Open();
+                var parameters = new 
+                { 
+                    UserId = userId 
+                };
+                var rows = connection.Execute(
+                    DataBaseConstants.UserDelete,
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return rows > 0;
             }
         }
     }

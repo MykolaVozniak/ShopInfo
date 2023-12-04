@@ -71,7 +71,6 @@
     <Build Include="dbo\Tables\Roles.sql" />
     <Build Include="dbo\Tables\Shops.sql" />
     <Build Include="dbo\Tables\Users.sql" />
-    <Build Include="dbo\Stored Procedures\sp_User_Register.sql" />
     <Build Include="dbo\Stored Procedures\sp_Category_Create.sql" />
     <Build Include="dbo\Stored Procedures\sp_Category_Delete.sql" />
     <Build Include="dbo\Stored Procedures\sp_Category_Edit.sql" />
@@ -92,7 +91,7 @@
     <Build Include="dbo\Stored Procedures\sp_Shop_Edit.sql" />
     <Build Include="dbo\Stored Procedures\sp_User_Delete.sql" />
     <Build Include="dbo\Stored Procedures\sp_User_Edit.sql" />
-    <Build Include="dbo\Stored Procedures\GetUserInformation.sql" />
-    <Build Include="dbo\Stored Procedures 2\sp_Get_First_N_Records.sql" />
+    <Build Include="dbo\Stored Procedures 2\sp_Get_Records.sql" />
+    <Build Include="dbo\Stored Procedures 2\sp_User_Add.sql" />
   </ItemGroup>
 </Project>

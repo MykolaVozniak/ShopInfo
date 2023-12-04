@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE sp_Get_First_N_Records
+﻿CREATE PROCEDURE sp_Get_Records
     @TableName NVARCHAR(255), 
     @nCount INT,
     @isASC BIT

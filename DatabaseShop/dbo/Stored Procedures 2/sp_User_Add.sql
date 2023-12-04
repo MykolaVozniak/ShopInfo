@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE sp_User_Register
+﻿CREATE PROCEDURE sp_User_Add
     @FirstName NVARCHAR(50),
     @LastName NVARCHAR(50),
     @MiddleName NVARCHAR(50),

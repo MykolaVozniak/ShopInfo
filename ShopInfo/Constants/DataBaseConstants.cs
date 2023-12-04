@@ -10,12 +10,14 @@ namespace ShopInfo.Constants
         public static SqlConnection GetConnection()
             => new(ConnectionString);
         //New
-        public const string GetFirstNRecords = "sp_Get_First_N_Records";
+        public const string GetRecords = "sp_Get_Records";
+
+        public const string UserAdd = "sp_User_Add";
+        public const string UserDelete = "sp_User_Delete";
 
         //Old
         #region Users
-        public const string UserRegister = "sp_User_Register";
-        public const string UserDelete = "sp_User_Delete";
+
         public const string UserEdit = "sp_User_Edit";
         public const string UserInfo = "sp_User_Info";
         #endregion
