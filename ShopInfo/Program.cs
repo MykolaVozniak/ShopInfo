@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using ShopInfo.Data;
 
 namespace ShopInfo
 {
@@ -13,7 +12,6 @@ namespace ShopInfo
             // Add services to the container.
             builder.Services.AddRazorPages();
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddSingleton<WeatherForecastService>();
 
             var app = builder.Build();
 

@@ -12,17 +12,24 @@ namespace ShopInfo.Constants
         //New
         public const string GetRecords = "sp_Get_Records";
 
-        public const string UserAdd = "sp_User_Add";
+        #region Users
+        public const string UserAdd = "sp_User_Add"; //Create
         public const string UserDelete = "sp_User_Delete";
         public const string UserGetById = "sp_User_Get_By_Id";
-        public const string UserUpdate = "sp_User_Update";
+        public const string UserUpdate = "sp_User_Update"; //Edit
+        #endregion
 
-        //Old
-        #region Users
+        #region Shops
+        public const string ShopCreate = "sp_Shop_Create";
+        public const string ShopDelete = "sp_Shop_Delete";
+        public const string ShopGetById = "sp_Shop_Get_By_Id";
+        public const string ShopEdit = "sp_Shop_Edit";
+        #endregion
+
+        //Old Unused
 
         public const string UserEdit = "sp_User_Edit";
         public const string UserInfo = "sp_User_Info";
-        #endregion
 
         #region Categories
         public const string CategoryDelete = "sp_Category_Delete";
@@ -49,9 +56,9 @@ namespace ShopInfo.Constants
         #endregion
 
         #region Shops
-        public const string ShopDelete = "sp_Shop_Delete";
-        public const string ShopCreate = "sp_Shop_Create";
-        public const string ShopEdit = "sp_Shop_Edit";
+        //public const string ShopDelete = "sp_Shop_Delete";
+        //public const string ShopCreate = "sp_Shop_Create";
+        //public const string ShopEdit = "sp_Shop_Edit";
         #endregion
 
         #region Employees
