@@ -14,6 +14,8 @@ namespace ShopInfo.Constants
 
         public const string UserAdd = "sp_User_Add";
         public const string UserDelete = "sp_User_Delete";
+        public const string UserGetById = "sp_User_Get_By_Id";
+        public const string UserUpdate = "sp_User_Update";
 
         //Old
         #region Users

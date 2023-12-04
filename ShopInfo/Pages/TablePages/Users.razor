@@ -52,7 +52,7 @@
                 <td>@user.Password</td>
                 <td>
                     <button type="button" class="btn btn-danger btn-sm" @onclick="@(async () => await DeleteUser(user.Id))"><span class="oi oi-x" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-warning btn-sm" @onclick="@ShowModalEdit"><span class="oi oi-pencil" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-warning btn-sm" @onclick="() => ShowModalEdit(user.Id)"><span class="oi oi-pencil" aria-hidden="true"></span></button>
                 </td>
             </tr>
         }
@@ -126,7 +126,7 @@
                 <div class="modal-body">
                     <form>
                         <div class="form-outline mb-4">
-                            <input type="text" @bind="model.Id" id="firstName" class="form-control form-control-lg" placeholder="First Name" />
+                            <input type="text" @bind="model.Id" id="id" class="form-control form-control-lg" disabled />
                         </div>
 
                         <div class="form-outline mb-4">
@@ -201,12 +201,14 @@
 
     private void ShowModalCreate()
     {
+        model = new Model();
         showModalCreate = true;
     }
 
     private void HideModalCreate()
     {
         showModalCreate = false;
+        model = new Model();
     }
 
     //Logic Add
@@ -240,28 +242,53 @@
             });
         RefreshUsers();
         HideModalCreate();
-        model = new Model();
     }
 
     //Modal Edit
     private bool showModalEdit = false;
 
-    private void ShowModalEdit()
+    private void ShowModalEdit(int id)
     {
+        var usersController = new UsersController();
+        var result = usersController.GetUser(id);
+        model = new Model()
+            {
+                Id = result.Id,
+                FirstName = result.FirstName,
+                LastName = result.LastName,
+                MiddleName = result.MiddleName,
+                Birthdate = result.Birthdate,
+                Email = result.Email,
+                Phone = result.Phone,
+                Password = result.Password,
+            };
         showModalCreate = true;
     }
 
     private void HideModalEdit()
     {
         showModalCreate = false;
+        model = new Model();
     }
 
     //Logic Edit
     private async Task EditUser(int id)
     {
+        var usersController = new UsersController();
+        var result = usersController.UpdateUser(new User
+            {
+                Id = model.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                MiddleName = model.MiddleName,
+                Birthdate = model.Birthdate,
+                Email = model.Email,
+                Phone = model.Phone,
+                Password = model.Password,
+
+            });
         RefreshUsers();
-        js.InvokeVoidAsync("console.log", $"Edit {id}");
-        model = new Model();
+        HideModalEdit();
     }
 
     //Delete

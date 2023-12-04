@@ -68,5 +68,47 @@ namespace ShopInfo.Controllers
                 return rows > 0;
             }
         }
+
+        public User GetUser(int userId)
+        {
+            using (var connection = DataBaseConstants.GetConnection())
+            {
+                connection.Open();
+                var parameters = new
+                {
+                    UserId = userId
+                };
+                var user = connection.QueryFirstOrDefault<User>(
+                    DataBaseConstants.UserGetById,
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return user;
+            }
+        }
+
+        public bool UpdateUser(User user)
+        {
+            using (var connection = DataBaseConstants.GetConnection())
+            {
+                connection.Open();
+                var parameters = new
+                {
+                    UserId = user.Id,
+                    user.FirstName,
+                    user.LastName,
+                    user.MiddleName,
+                    user.Birthdate,
+                    user.Email,
+                    user.Phone,
+                    user.Password
+                };
+                var rows = connection.Execute(
+                    DataBaseConstants.UserUpdate,
+                    parameters,
+                    commandType: CommandType.StoredProcedure);
+                return rows > 0;
+            }
+        }
     }
 }
