@@ -68,7 +68,6 @@
     <Folder Include="dbo\Stored Procedures\Categories" />
     <Folder Include="dbo\Stored Procedures\Products" />
     <Folder Include="dbo\Stored Procedures\Purchases" />
-    <Folder Include="dbo\Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Categories.sql" />

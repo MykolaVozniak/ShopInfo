@@ -188,12 +188,16 @@
 
     private void OnCountChange(ChangeEventArgs args)
     {
-        var val = Convert.ToInt32(args.Value);
-        if (val >= 0)
+        //int val;
+        if(int.TryParse(args.Value.ToString(), out var val))
         {
-            n = val;
-            RefreshUsers();
+            if (val >= 0)
+            {
+                n = val;
+                RefreshUsers();
+            }
         }
+
     }
 
     //Modal Add

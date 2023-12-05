@@ -168,18 +168,26 @@
 
     private void OnCountChange(ChangeEventArgs args)
     {
-        var val = Convert.ToInt32(args.Value);
-        js.InvokeVoidAsync("console.log", $"Edit {val}");
-        if (val >= 0)
+        try
         {
-            n = val;
-            RefreshTable();
+            var val = Convert.ToInt32(args.Value);
+            js.InvokeVoidAsync("console.log", $"Edit {val}");
+            if (val >= 0)
+            {
+                n = val;
+                RefreshTable();
+            }
+            else
+            {
+                n = 5;
+                RefreshTable();
+            }
         }
-        else
+        catch(Exception ex)
         {
-            n = 5;
-            RefreshTable();
+            
         }
+        
     }
 
     // model

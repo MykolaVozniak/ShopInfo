@@ -41,7 +41,7 @@
         {
             <tr class="bg-light">
                 <td>@i.Id</td>
-                <td>@i.MotherCategoryId</td>
+                <td title="@GetCategoryIdTooltip(i.MotherCategoryId)">@i.MotherCategoryId</td>
                 <td title="@GetShopIdTooltip(i.ShopId)">@i.ShopId</td>
                 <td>@i.CategoryName</td>
                 <td>@i.CategoryDescription</td>
@@ -291,6 +291,24 @@
             Email : {result.Email}
             Phone : {result.Phone}
             PostalCode : {result.PostalCode}
+            ";
+        }
+        return "";
+    }
+
+    private string GetCategoryIdTooltip(int? id)
+    {
+        if (id.HasValue)
+        {
+            var categoriesController = new CategoriesController();
+            var result = categoriesController.GetCategory(id.Value);
+            return
+            $@"
+            Id : {result.Id}
+            MotherCategoryId : {result.MotherCategoryId}
+            ShopId : {result.ShopId}
+            CategoryName : {result.CategoryName}
+            CategoryDescription : {result.CategoryDescription}
             ";
         }
         return "";

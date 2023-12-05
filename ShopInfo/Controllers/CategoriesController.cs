@@ -9,6 +9,7 @@ namespace ShopInfo.Controllers
 {
     public class CategoriesController : Controller
     {
+
         public IEnumerable<Category> GetCategories(int n, bool isAsc)
         {
             using (var connection = DataBaseConstants.GetConnection())
