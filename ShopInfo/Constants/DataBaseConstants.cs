@@ -60,7 +60,5 @@ namespace ShopInfo.Constants
         public const string PurchaseGetById = "sp_Purchase_Get_By_Id";
         public const string PurchaseEdit = "sp_Purchase_Edit";
         #endregion
-
-        //Old Unused
     }
 }
