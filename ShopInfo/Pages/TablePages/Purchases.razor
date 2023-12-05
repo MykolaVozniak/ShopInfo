@@ -39,8 +39,9 @@
         {
             <tr class="bg-light">
                 <td>@i.Id</td>
+                <td title="@GetProductIdTooltip(i.ProductId)">@i.ProductId</td>
                 <td>@i.ProductId</td>
-                <td>@i.UserId</td>
+                <td title="@GetUserIdTooltip(i.UserId)">@i.UserId</td>
                 <td>@i.PurchaseTime</td>
                 <td>
                     <button type="button" class="btn btn-warning btn-sm" @onclick="() => ShowModalEdit(i.Id)"><span class="oi oi-pencil" aria-hidden="true"></span></button>
@@ -260,6 +261,48 @@
         RefreshTable();
     }
 
+    //Tooltips
+    private string GetProductIdTooltip(int? id)
+    {
+        if (id.HasValue)
+        {
+            var productsController = new ProductsController();
+            var result = productsController.GetProduct(id.Value);
+            return
+            $@"
+            Id : {result.Id}
+            CategoryId : {result.CategoryId}
+            ProductName : {result.ProductName}
+            SKU : {result.SKU}
+            Price : {result.Price}
+            ImageURL : {result.ImageURL}
+            TaxGroup : {result.TaxGroup}
+            Is18Plus : {result.Is18Plus}
+            IsExciseApplicable : {result.IsExciseApplicable}
+            ";
+        }
+        return "";
+    }
 
+    private string GetUserIdTooltip(int? id)
+    {
+        if (id.HasValue)
+        {
+            var usersController = new UsersController();
+            var result = usersController.GetUser(id.Value);
+            return
+            $@"
+            Id : {result.Id}
+            FirstName : {result.FirstName}
+            MiddleName : {result.MiddleName}
+            LastName : {result.LastName}
+            Birthdate : {result.Birthdate}
+            Email : {result.Email}
+            Phone : {result.Phone}
+            Password : {result.Password}
+            ";
+        }
+        return "";
+    }
 }
 

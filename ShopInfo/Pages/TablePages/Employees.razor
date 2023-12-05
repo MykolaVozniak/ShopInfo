@@ -41,8 +41,8 @@
         {
             <tr class="bg-light">
                 <td>@i.Id</td>
-                <td>@i.UserId</td>
-                <td>@i.RoleId</td>
+                <td title="@GetUserIdTooltip(i.UserId)">@i.UserId</td>
+                <td title="@GetRoleIdTooltip(i.RoleId)">@i.RoleId</td>
                 <td>@i.HireDate</td>
                 <td>@i.IsOwner</td>
 
@@ -279,6 +279,45 @@
         isAsc = true;
         n = 5;
         RefreshTable();
+    }
+
+    //Tooltips
+    private string GetRoleIdTooltip(int? id)
+    {
+        if (id.HasValue)
+        {
+            var rolesController = new RolesController();
+            var result = rolesController.GetRole(id.Value);
+            return
+            $@"
+            Id : {result.Id}
+            ShopId : {result.ShopId}
+            RoleName : {result.RoleName}
+            RoleDescription : {result.RoleDescription}
+            ";
+        }
+        return "";
+    }
+
+    private string GetUserIdTooltip(int? id)
+    {
+        if (id.HasValue)
+        {
+            var usersController = new UsersController();
+            var result = usersController.GetUser(id.Value);
+            return
+            $@"
+            Id : {result.Id}
+            FirstName : {result.FirstName}
+            MiddleName : {result.MiddleName}
+            LastName : {result.LastName}
+            Birthdate : {result.Birthdate}
+            Email : {result.Email}
+            Phone : {result.Phone}
+            Password : {result.Password}
+            ";
+        }
+        return "";
     }
 
 

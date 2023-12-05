@@ -40,7 +40,7 @@
         {
             <tr class="bg-light">
                 <td>@i.Id</td>
-                <td>@i.ShopId</td>
+                <td title="@GetShopIdTooltip(i.ShopId)">@i.ShopId</td>
                 <td>@i.RoleName</td>
                 <td>@i.RoleDescription</td>
 
@@ -262,6 +262,28 @@
         n = 5;
         RefreshTable();
     }
+
+    //Tooltips
+    private string GetShopIdTooltip(int? shopId)
+    {
+        if (shopId.HasValue)
+        {
+            var shopsController = new ShopsController();
+            var result = shopsController.GetShop(shopId.Value);
+            return 
+            $@"             
+            Id : {result.Id}
+            ShopName : {result.ShopName}
+            City : {result.City}
+            Adress : {result.Adress}
+            Email : {result.Email}
+            Phone : {result.Phone}
+            PostalCode : {result.PostalCode}
+            ";
+        }
+        return "";
+    }
+
 
 
 }
