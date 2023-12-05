@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Products] (
     [Id]                 INT            IDENTITY (1, 1) NOT NULL,
-    [CategoryId]         INT            NOT NULL,
+    [CategoryId]         INT            NULL,
     [ProductName]        NVARCHAR (50)  NOT NULL,
     [SKU]                INT            NOT NULL,
     [Price]              MONEY          NULL,
@@ -9,6 +9,6 @@
     [Is18Plus]           BIT            NOT NULL,
     [IsExciseApplicable] BIT            NOT NULL,
     CONSTRAINT [PK_Products] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Products_Categories] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Categories] ([Id])
+    CONSTRAINT [FK_Products_Categories] FOREIGN KEY ([CategoryId]) REFERENCES [dbo].[Categories] ([Id]) ON DELETE SET NULL
 );
 

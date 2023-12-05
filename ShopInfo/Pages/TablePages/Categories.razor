@@ -1,7 +1,26 @@
 ﻿@page "/categories"
+@using ShopInfo.Controllers
+@using ShopInfo.Models
+@inject IJSRuntime js
+@inject NavigationManager navManager
 <PageTitle>Categories</PageTitle>
-<h3>Categories</h3>
 
-@code {
+<h1 class="text-center">Categories</h1>
+<hr />
 
-}
+@* <div class="row my-3 mx-0 justify-content-start">
+    <div class="col-auto pe-1 ps-0">
+        <input type="radio" class="btn-check" name="options-outlined" id="asc-outlined" autocomplete="off" checked @onchange="OnAscChange">
+        <label class="btn btn-outline-primary" for="asc-outlined"><span class="oi oi-caret-top" aria-hidden="true"></span> Ascending</label>
+    </div>
+
+    <div class="col-auto pe-1 ps-0">
+        <input type="radio" class="btn-check" name="options-outlined" id="desc-outlined" autocomplete="off" @onchange="OnDescChange">
+        <label class="btn btn-outline-primary" for="desc-outlined"><span class="oi oi-caret-bottom" aria-hidden="true"></span> Descending</label>
+    </div>
+
+    <div class="col-auto pe-1 ps-0">
+        <input type="number" class="h-100 rounded border-1 p-1 ps-2" placeholder="Enter row count" aria-label="Count" @onchange="OnCountChange">
+    </div>
+</div> *@
+
