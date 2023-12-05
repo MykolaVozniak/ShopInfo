@@ -107,6 +107,5 @@
     <Build Include="dbo\Stored Procedures\Purchases\sp_Purchase_Edit.sql" />
     <Build Include="dbo\Stored Procedures\Purchases\sp_Purchase_Make.sql" />
     <Build Include="dbo\Stored Procedures\Purchases\sp_Purchase_Get_By_Id.sql" />
-    <Build Include="dbo\Triggers\tr_SetNullOnDelete.sql" />
   </ItemGroup>
 </Project>
