@@ -6,7 +6,7 @@
     [Birthdate]  DATE           NOT NULL,
     [Email]      NVARCHAR (255) NOT NULL,
     [Phone]      NVARCHAR (20)  NOT NULL,
-    [Password]   NVARCHAR (MAX) NULL,
+    [Password]   NVARCHAR (50) NOT NULL,
     CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED ([Id] ASC),
     UNIQUE NONCLUSTERED ([Email] ASC)
 );
