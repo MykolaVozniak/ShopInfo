@@ -8,7 +8,7 @@
 <h1 class="text-center">Products</h1>
 <hr />
 
-@* <div class="row my-3 mx-0 justify-content-start">
+<div class="row my-3 mx-0 justify-content-start">
     <div class="col-auto pe-1 ps-0">
         <input type="radio" class="btn-check" name="options-outlined" id="asc-outlined" autocomplete="off" checked @onchange="OnAscChange">
         <label class="btn btn-outline-primary" for="asc-outlined"><span class="oi oi-caret-top" aria-hidden="true"></span> Ascending</label>
@@ -22,4 +22,317 @@
     <div class="col-auto pe-1 ps-0">
         <input type="number" class="h-100 rounded border-1 p-1 ps-2" placeholder="Enter row count" aria-label="Count" @onchange="OnCountChange">
     </div>
-</div> *@
+</div>
+
+<table class="table p-0">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th>Id</th>
+            <th>CategoryId</th>
+            <th>ProductName</th>
+            <th>SKU</th>
+            <th>Price</th>
+            <th>ImageURL</th>
+            <th>TaxGroup</th>
+            <th>Is18Plus</th>
+            <th>IsExciseApplicable</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in products)
+        {
+            <tr class="bg-light">
+                <td>@i.Id</td>
+                <td>@i.CategoryId</td>
+                <td>@i.ProductName</td>
+                <td>@i.SKU</td>
+                <td>@i.Price</td>
+                <td>@i.ImageURL</td>
+                <td>@i.TaxGroup</td>
+                <td>@i.Is18Plus</td>
+                <td>@i.IsExciseApplicable</td>
+
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm" @onclick="() => ShowModalEdit(i.Id)"><span class="oi oi-pencil" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-danger btn-sm" @onclick="@(async () => await DeleteProduct(i.Id))"><span class="oi oi-x" aria-hidden="true"></span></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="container d-flex justify-content-center mb-3">
+    <button class="btn btn-success w-25" @onclick="ShowModalCreate">Add Product</button>
+</div>
+
+<!-- Modal Create -->
+@if (showModalCreate)
+{
+    <div class="modal fade show d-block bg-white bg-opacity-50">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title ms-2">Add Product</h2>
+                    <button type="button" class="btn-close" @onclick="HideModalCreate"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.CategoryId" id="categoryId" class="form-control form-control-lg" placeholder="Category Id" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.ProductName" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.SKU" id="sku" class="form-control form-control-lg" placeholder="SKU" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.Price" id="price" class="form-control form-control-lg" placeholder="Price" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.ImageURL" id="imageURL" class="form-control form-control-lg" placeholder="Image URL" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.TaxGroup" id="taxGroup" class="form-control form-control-lg" placeholder="Tax Group" />
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" @bind="model.Is18Plus" id="is18Plus" />
+                            <label class="form-check-label" for="is18Plus">
+                                Is 18 Plus
+                            </label>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" @bind="model.IsExciseApplicable" id="isExciseApplicable" />
+                            <label class="form-check-label" for="isExciseApplicable">
+                                Is Excise Applicable
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="HideModalCreate">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="AddProduct">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Modal Edit -->
+@if (showModalEdit)
+{
+    <div class="modal fade show d-block bg-white bg-opacity-50">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title ms-2">Edit Product</h2>
+                    <button type="button" class="btn-close" @onclick="HideModalEdit"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.Id" id="id" class="form-control form-control-lg" disabled />
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.CategoryId" id="categoryId" class="form-control form-control-lg" placeholder="Category Id" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.ProductName" id="productName" class="form-control form-control-lg" placeholder="Product Name" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.SKU" id="sku" class="form-control form-control-lg" placeholder="SKU" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.Price" id="price" class="form-control form-control-lg" placeholder="Price" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.ImageURL" id="imageURL" class="form-control form-control-lg" placeholder="Image URL" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.TaxGroup" id="taxGroup" class="form-control form-control-lg" placeholder="Tax Group" />
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" @bind="model.Is18Plus" id="is18Plus" />
+                            <label class="form-check-label" for="is18Plus">
+                                Is 18 Plus
+                            </label>
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" @bind="model.IsExciseApplicable" id="isExciseApplicable" />
+                            <label class="form-check-label" for="isExciseApplicable">
+                                Is Excise Applicable
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="HideModalEdit">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="(async () => await EditProduct(model.Id))">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    //User list
+    private bool isAsc;
+    private int n;
+    private List<Product> products;
+
+    private void OnAscChange(ChangeEventArgs args)
+    {
+        isAsc = true;
+        RefreshTable();
+    }
+
+    private void OnDescChange(ChangeEventArgs args)
+    {
+        isAsc = false;
+        RefreshTable();
+    }
+
+    private void OnCountChange(ChangeEventArgs args)
+    {
+        var val = Convert.ToInt32(args.Value);
+        js.InvokeVoidAsync("console.log", $"Edit {val}");
+        if (val >= 0)
+        {
+            n = val;
+            RefreshTable();
+        }
+        else
+        {
+            n = 5;
+            RefreshTable();
+        }
+    }
+
+    // model
+
+    private class Model
+    {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public string ProductName { get; set; }
+        public int SKU { get; set; }
+        public decimal? Price { get; set; }
+        public string ImageURL { get; set; }
+        public string TaxGroup { get; set; }
+        public bool Is18Plus { get; set; }
+        public bool IsExciseApplicable { get; set; }
+    }
+
+    private Model model = new Model();
+
+    //Modal Add
+    private bool showModalCreate = false;
+
+    private void ShowModalCreate()
+    {
+        model = new Model();
+        showModalCreate = true;
+    }
+
+    private void HideModalCreate()
+    {
+        showModalCreate = false;
+        model = new Model();
+    }
+
+    //Logic Add
+    private async Task AddProduct()
+    {
+        var productsController = new ProductsController();
+        var result = productsController.CreateProduct(new Product
+            {
+                CategoryId = model.CategoryId,
+                ProductName = model.ProductName,
+                SKU = model.SKU,
+                Price = model.Price,
+                ImageURL = model.ImageURL,
+                TaxGroup = model.TaxGroup,
+                Is18Plus = model.Is18Plus,
+                IsExciseApplicable = model.IsExciseApplicable,
+            });
+        RefreshTable();
+        HideModalCreate();
+    }
+
+    //Modal Edit
+    private bool showModalEdit = false;
+
+    private void ShowModalEdit(int id)
+    {
+        var productsController = new ProductsController();
+        var result = productsController.GetProduct(id);
+        model = new Model()
+            {
+                Id = result.Id,
+                CategoryId = result.CategoryId,
+                ProductName = result.ProductName,
+                SKU = result.SKU,
+                Price = result.Price,
+                ImageURL = result.ImageURL,
+                TaxGroup = result.TaxGroup,
+                Is18Plus = result.Is18Plus,
+                IsExciseApplicable = result.IsExciseApplicable,
+            };
+        showModalEdit = true;
+    }
+
+    private void HideModalEdit()
+    {
+        showModalEdit = false;
+        model = new Model();
+    }
+
+    //Logic Edit
+    private async Task EditProduct(int id)
+    {
+        var productsController = new ProductsController();
+        var result = productsController.EditProduct(new Product
+            {
+                Id = model.Id,
+                CategoryId = model.CategoryId,
+                ProductName = model.ProductName,
+                SKU = model.SKU,
+                Price = model.Price,
+                ImageURL = model.ImageURL,
+                TaxGroup = model.TaxGroup,
+                Is18Plus = model.Is18Plus,
+                IsExciseApplicable = model.IsExciseApplicable,
+            });
+        RefreshTable();
+        HideModalEdit();
+    }
+
+    //Delete
+    private async Task DeleteProduct(int id)
+    {
+        var productsController = new ProductsController();
+        var result = productsController.DeleteProduct(id);
+        RefreshTable();
+    }
+
+    //Init and show list
+    private void RefreshTable()
+    {
+        var productsController = new ProductsController();
+        products = productsController.GetProducts(n: n, isAsc: isAsc).ToList();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAsc = true;
+        n = 5;
+        RefreshTable();
+    }
+
+
+}

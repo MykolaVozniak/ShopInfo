@@ -8,7 +8,7 @@
 <h1 class="text-center">Employees</h1>
 <hr />
 
-@* <div class="row my-3 mx-0 justify-content-start">
+<div class="row my-3 mx-0 justify-content-start">
     <div class="col-auto pe-1 ps-0">
         <input type="radio" class="btn-check" name="options-outlined" id="asc-outlined" autocomplete="off" checked @onchange="OnAscChange">
         <label class="btn btn-outline-primary" for="asc-outlined"><span class="oi oi-caret-top" aria-hidden="true"></span> Ascending</label>
@@ -22,4 +22,264 @@
     <div class="col-auto pe-1 ps-0">
         <input type="number" class="h-100 rounded border-1 p-1 ps-2" placeholder="Enter row count" aria-label="Count" @onchange="OnCountChange">
     </div>
-</div> *@
+</div>
+
+<table class="table p-0">
+    <thead>
+        <tr class="bg-primary text-white">
+            <th>Id</th>
+            <th>UserId</th>
+            <th>RoleId</th>
+            <th>HireDate</th>
+            <th>IsOwner</th>
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in employees)
+        {
+            <tr class="bg-light">
+                <td>@i.Id</td>
+                <td>@i.UserId</td>
+                <td>@i.RoleId</td>
+                <td>@i.HireDate</td>
+                <td>@i.IsOwner</td>
+
+                <td>
+                    <button type="button" class="btn btn-warning btn-sm" @onclick="() => ShowModalEdit(i.Id)"><span class="oi oi-pencil" aria-hidden="true"></span></button>
+                    <button type="button" class="btn btn-danger btn-sm" @onclick="@(async () => await DeleteEmployee(i.Id))"><span class="oi oi-x" aria-hidden="true"></span></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="container d-flex justify-content-center mb-3">
+    <button class="btn btn-success w-25" @onclick="ShowModalCreate">Add Employee</button>
+</div>
+
+<!-- Modal Create -->
+@if (showModalCreate)
+{
+    <div class="modal fade show d-block bg-white bg-opacity-50">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title ms-2">Add Employee</h2>
+                    <button type="button" class="btn-close" @onclick="HideModalCreate"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.UserId" id="userId" class="form-control form-control-lg" placeholder="User Id" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.RoleId" id="roleId" class="form-control form-control-lg" placeholder="Role Id" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="date" @bind="model.HireDate" id="hireDate" class="form-control form-control-lg" placeholder="Hire Date" />
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" @bind="model.IsOwner" id="isOwner" />
+                            <label class="form-check-label" for="isOwner">
+                                Is Owner
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="HideModalCreate">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="AddEmployee">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Modal Edit -->
+@if (showModalEdit)
+{
+    <div class="modal fade show d-block bg-white bg-opacity-50">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title ms-2">Edit Employee</h2>
+                    <button type="button" class="btn-close" @onclick="HideModalEdit"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-outline mb-4">
+                            <input type="text" @bind="model.Id" id="id" class="form-control form-control-lg" disabled />
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.UserId" id="userId" class="form-control form-control-lg" placeholder="User Id" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="number" @bind="model.RoleId" id="roleId" class="form-control form-control-lg" placeholder="Role Id" />
+                        </div>
+                        <div class="form-outline mb-4">
+                            <input type="date" @bind="model.HireDate" id="hireDate" class="form-control form-control-lg" placeholder="Hire Date" />
+                        </div>
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" @bind="model.IsOwner" id="isOwner" />
+                            <label class="form-check-label" for="isOwner">
+                                Is Owner
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="HideModalEdit">Close</button>
+                    <button type="button" class="btn btn-primary" @onclick="(async () => await EditEmployee(model.Id))">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    //User list
+    private bool isAsc;
+    private int n;
+    private List<Employee> employees;
+
+    private void OnAscChange(ChangeEventArgs args)
+    {
+        isAsc = true;
+        RefreshTable();
+    }
+
+    private void OnDescChange(ChangeEventArgs args)
+    {
+        isAsc = false;
+        RefreshTable();
+    }
+
+    private void OnCountChange(ChangeEventArgs args)
+    {
+        var val = Convert.ToInt32(args.Value);
+        js.InvokeVoidAsync("console.log", $"Edit {val}");
+        if (val >= 0)
+        {
+            n = val;
+            RefreshTable();
+        }
+        else
+        {
+            n = 5;
+            RefreshTable();
+        }
+    }
+
+    // model
+
+    private class Model
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int RoleId { get; set; }
+        public DateTime HireDate { get; set; }
+        public bool IsOwner { get; set; }
+    }
+
+    private Model model = new Model();
+
+    //Modal Add
+    private bool showModalCreate = false;
+
+    private void ShowModalCreate()
+    {
+        model = new Model();
+        showModalCreate = true;
+    }
+
+    private void HideModalCreate()
+    {
+        showModalCreate = false;
+        model = new Model();
+    }
+
+    //Logic Add
+    private async Task AddEmployee()
+    {
+
+        var employeesController = new EmployeesController();
+        var result = employeesController.CreateEmployee(new Employee
+            {
+                UserId = model.UserId,
+                RoleId = model.RoleId,
+                HireDate = model.HireDate,
+                IsOwner = model.IsOwner,
+            });
+        RefreshTable();
+        HideModalCreate();
+    }
+
+    //Modal Edit
+    private bool showModalEdit = false;
+
+    private void ShowModalEdit(int id)
+    {
+        var employeesController = new EmployeesController();
+        var result = employeesController.GetEmployee(id);
+        model = new Model()
+            {
+                Id = result.Id,
+                UserId = result.UserId,
+                RoleId = result.RoleId,
+                HireDate = result.HireDate,
+                IsOwner = result.IsOwner,
+            };
+        showModalEdit = true;
+    }
+
+    private void HideModalEdit()
+    {
+        showModalEdit = false;
+        model = new Model();
+    }
+
+    //Logic Edit
+    private async Task EditEmployee(int id)
+    {
+        var employeesController = new EmployeesController();
+        var result = employeesController.EditEmployee(new Employee
+            {
+                Id = model.Id,
+                UserId = model.UserId,
+                RoleId = model.RoleId,
+                HireDate = model.HireDate,
+                IsOwner = model.IsOwner,
+            });
+        RefreshTable();
+        HideModalEdit();
+    }
+
+    //Delete
+    private async Task DeleteEmployee(int id)
+    {
+        var employeesController = new EmployeesController();
+        var result = employeesController.DeleteEmployee(id);
+        RefreshTable();
+    }
+
+    //Init and show list
+    private void RefreshTable()
+    {
+        var employeesController = new EmployeesController();
+        employees = employeesController.GetEmployees(n: n, isAsc: isAsc).ToList();
+        StateHasChanged();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isAsc = true;
+        n = 5;
+        RefreshTable();
+    }
+
+
+}

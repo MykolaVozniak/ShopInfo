@@ -31,6 +31,7 @@
             <th>ShopId</th>
             <th>RoleName</th>
             <th>RoleDescription</th>
+
             <th>Actions</th>
         </tr>
     </thead>
@@ -42,6 +43,7 @@
                 <td>@i.ShopId</td>
                 <td>@i.RoleName</td>
                 <td>@i.RoleDescription</td>
+
                 <td>
                     <button type="button" class="btn btn-warning btn-sm" @onclick="() => ShowModalEdit(i.Id)"><span class="oi oi-pencil" aria-hidden="true"></span></button>
                     <button type="button" class="btn btn-danger btn-sm" @onclick="@(async () => await DeleteRole(i.Id))"><span class="oi oi-x" aria-hidden="true"></span></button>

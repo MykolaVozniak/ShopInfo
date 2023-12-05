@@ -68,6 +68,7 @@
     <Folder Include="dbo\Stored Procedures\Categories" />
     <Folder Include="dbo\Stored Procedures\Products" />
     <Folder Include="dbo\Stored Procedures\Purchases" />
+    <Folder Include="dbo\Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Categories.sql" />
@@ -106,5 +107,6 @@
     <Build Include="dbo\Stored Procedures\Purchases\sp_Purchase_Edit.sql" />
     <Build Include="dbo\Stored Procedures\Purchases\sp_Purchase_Make.sql" />
     <Build Include="dbo\Stored Procedures\Purchases\sp_Purchase_Get_By_Id.sql" />
+    <Build Include="dbo\Triggers\tr_SetNullOnDelete.sql" />
   </ItemGroup>
 </Project>
